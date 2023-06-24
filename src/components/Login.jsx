@@ -36,7 +36,7 @@ const LoginInnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 80px;
+  padding: 60px 5vw;
   text-align: center;
   background-color: white;
   border-radius: 10px;
@@ -46,6 +46,10 @@ const LoginInnerContainer = styled.div`
     object-fit: contain;
     margin-bottom: 30px;
     height: 130px;
+  }
+
+  @media (max-width: 400px){
+    padding: 40px 5px;
   }
 `;
 
@@ -70,6 +74,6 @@ const TwitterButton = styled(Button)`
   width: 80%;
   padding: 10px 20px;
   color: white;
-  background-color: #1C9AF0 !important;
+  background-color: #1c9af0 !important;
   text-transform: inherit !important;
 `;
