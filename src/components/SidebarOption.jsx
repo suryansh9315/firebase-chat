@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { db } from "../firebase";
-import { collection, addDoc, getDoc, query, getDocs, where } from "firebase/firestore";
+import { collection, addDoc, query, getDocs, where } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { setRoomId, setRoomType } from "../features/appSlice";
+import { setRoomId, setRoomType, setIsSidebar } from "../features/appSlice";
 
 const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
   const dispatch = useDispatch();
@@ -13,8 +13,8 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
     if (channelName) {
       try {
         const currentDocs = await getDocs(query(collection(db, "rooms"), where("name", "==", channelName)))
-        if(currentDocs.docs.length == 1) return alert("Room Already Exists")
-        const docRef = await addDoc(collection(db, "rooms"), {
+        if(currentDocs.docs.length === 1) return alert("Room Already Exists")
+        await addDoc(collection(db, "rooms"), {
           name: channelName,
         });
       } catch (e) {
@@ -26,6 +26,7 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
     if (id) {
         dispatch(setRoomId(id))
         dispatch(setRoomType('rooms'))
+        dispatch(setIsSidebar(false))
     }
   };
 

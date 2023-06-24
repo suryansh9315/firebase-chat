@@ -4,11 +4,16 @@ import styled from "@emotion/styled";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SearchIcon from '@mui/icons-material/Search'
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { selectIsSidebar, setIsSidebar } from "../features/appSlice";
 
 const Header = () => {
   const [user] = useAuthState(auth)
+  const isSidebar = useSelector(selectIsSidebar)
+  const dispatch = useDispatch()
 
   return (
     <HeaderContainer>
@@ -22,6 +27,7 @@ const Header = () => {
       </HeaderSearch>
       <HeaderRight>
         <HelpOutlineIcon />
+        <MenuOpenIconContainer onClick={() => dispatch(setIsSidebar(!isSidebar))} />
       </HeaderRight>
     </HeaderContainer>
   );
@@ -49,6 +55,12 @@ const HeaderLeft = styled.div`
     margin-left: auto;
     margin-right: 30px;
   }
+
+  @media (max-width: 750px) {
+    > .MuiSvgIcon-root {
+      display: none;
+    }
+  }
 `
 const HeaderSearch = styled.div`
   flex: 0.4;
@@ -60,6 +72,10 @@ const HeaderSearch = styled.div`
   padding: 0 50px;
   color: gray;
   border: 1px gray solid;
+
+  @media (max-width: 750px) {
+    display: none;
+  }
 
   > input {
     background-color: transparent;
@@ -73,11 +89,14 @@ const HeaderSearch = styled.div`
 const HeaderRight = styled.div`
   flex: 0.3;
   display: flex;
-  align-items: flex-end;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 20px;
 
   > .MuiSvgIcon-root {
-    margin-left: auto;
-    margin-right: 20px;
+    /* margin-left: auto; */
+    /* margin-right: 20px; */
   }
 `
 const HeaderAvatar = styled(Avatar)`
@@ -85,5 +104,13 @@ const HeaderAvatar = styled(Avatar)`
 
   :hover{
     opacity: 0.8;
+  }
+`
+const MenuOpenIconContainer = styled(MenuOpenIcon)`
+  display: none;
+  font-size: 30px;
+
+  @media (max-width: 750px) {
+    display: block;
   }
 `

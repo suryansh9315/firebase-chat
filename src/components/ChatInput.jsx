@@ -16,7 +16,7 @@ const ChatInput = ({ channelId, channelName, chatRef, chatType }) => {
     try {
       const roomRef = doc(db, chatType, channelId);
       const messagesRef = collection(roomRef, "messages");
-      const messageRef = await addDoc(messagesRef, {
+      await addDoc(messagesRef, {
         message: inputRef.current.value,
         timeStamp: serverTimestamp(),
         user: user?.displayName,

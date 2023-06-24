@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   roomId: null,
-  roomType: null
+  roomType: null,
+  isSidebar: false
 };
 
 export const appSlice = createSlice({
@@ -15,12 +16,16 @@ export const appSlice = createSlice({
     setRoomType: (state, action) => {
       state.roomType = action.payload;
     },
+    setIsSidebar: (state, action) => {
+      state.isSidebar = action.payload;
+    },
   },
 });
 
-export const { setRoomId, setRoomType } = appSlice.actions;
+export const { setRoomId, setRoomType, setIsSidebar } = appSlice.actions;
 
 export const selectRoomId = (state) => state.app.roomId;
 export const selectRoomType = (state) => state.app.roomType;
+export const selectIsSidebar = (state) => state.app.isSidebar;
 
 export default appSlice.reducer;

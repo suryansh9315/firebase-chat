@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useDispatch } from "react-redux";
-import { setRoomId, setRoomType } from "../features/appSlice";
+import { setIsSidebar, setRoomId, setRoomType } from "../features/appSlice";
 import InsertCommentIcon from "@mui/icons-material/InsertComment";
 import InboxIcon from "@mui/icons-material/Inbox";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
@@ -13,6 +13,7 @@ const GeneralSidebarOption = ({ Icon, title, id }) => {
     if (id) {
       dispatch(setRoomId(id));
       dispatch(setRoomType('generalRooms'))
+      dispatch(setIsSidebar(false))
     }
   };
 

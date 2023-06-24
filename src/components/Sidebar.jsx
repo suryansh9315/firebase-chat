@@ -9,14 +9,19 @@ import { auth, db } from "../firebase";
 import { collection, orderBy, query } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useSelector } from "react-redux";
+import { selectIsSidebar } from "../features/appSlice";
 
 const Sidebar = () => {
-  const [channels] = useCollection(query(collection(db, "rooms"), orderBy('name')));
+  const [channels] = useCollection(
+    query(collection(db, "rooms"), orderBy("name"))
+  );
+  const isSidebar = useSelector(selectIsSidebar)
   const [generalChannels] = useCollection(collection(db, "generalRooms"));
-  const [user] = useAuthState(auth)
+  const [user] = useAuthState(auth);
 
   return (
-    <SidebarContainer>
+    <SidebarContainer isSidebar={isSidebar}>
       <SidebarHeader>
         <SidebarInfo>
           <h2>OTAKU CHAT</h2>
@@ -30,7 +35,12 @@ const Sidebar = () => {
         </SidebarHeaderRight>
       </SidebarHeader>
       {generalChannels?.docs.map((doc) => (
-        <GeneralSidebarOption key={doc.id} id={doc.id} Icon={doc.data().Icon} title={doc.data().name} />
+        <GeneralSidebarOption
+          key={doc.id}
+          id={doc.id}
+          Icon={doc.data().Icon}
+          title={doc.data().name}
+        />
       ))}
       <hr />
       <SidebarOption Icon={ExpandMoreIcon} title="Channels" />
@@ -49,10 +59,35 @@ const SidebarContainer = styled.div`
   color: white;
   background-color: var(--slack-color);
   flex: 0.3;
-  max-width: 260px;
+  max-width: 300px;
   margin-top: 60px;
   border-top: 1px solid #49274b;
   overflow-y: auto;
+  transition: all ease-in-out 0.5s;
+
+  @media (max-width: 900px) {
+    color: white;
+    background-color: var(--slack-color);
+    flex: 0.4;
+    max-width: 300px;
+    margin-top: 60px;
+    border-top: 1px solid #49274b;
+    overflow-y: auto;
+  }
+
+  @media (max-width: 750px) {
+    color: white;
+    background-color: var(--slack-color);
+    width: 250px;
+    margin-top: 60px;
+    border-top: 1px solid #49274b;
+    overflow-y: auto;
+    position: absolute;
+    left: ${props => (props.isSidebar ? '0px' : '-500px')};
+    top: 0;
+    bottom: 0;
+    z-index: 200;
+  }
 
   > hr {
     margin: 10px 0px;
