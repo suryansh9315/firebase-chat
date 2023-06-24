@@ -3,7 +3,7 @@ import React from "react";
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { setRoomId } from "../features/appSlice";
+import { setRoomId, setRoomType } from "../features/appSlice";
 
 const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
   const dispatch = useDispatch();
@@ -23,6 +23,7 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
   const selectChannel = () => {
     if (id) {
         dispatch(setRoomId(id))
+        dispatch(setRoomType('rooms'))
     }
   };
 

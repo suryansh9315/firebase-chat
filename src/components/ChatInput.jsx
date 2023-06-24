@@ -5,7 +5,7 @@ import { collection, addDoc, doc, serverTimestamp } from "firebase/firestore";
 import { Button } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const ChatInput = ({ channelId, channelName, chatRef }) => {
+const ChatInput = ({ channelId, channelName, chatRef, chatType }) => {
   const inputRef = useRef();
   const [user] = useAuthState(auth)
 
@@ -14,7 +14,7 @@ const ChatInput = ({ channelId, channelName, chatRef }) => {
     if (!channelId) return;
     if (!inputRef.current.value) return;
     try {
-      const roomRef = doc(db, "rooms", channelId);
+      const roomRef = doc(db, chatType, channelId);
       const messagesRef = collection(roomRef, "messages");
       const messageRef = await addDoc(messagesRef, {
         message: inputRef.current.value,

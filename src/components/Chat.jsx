@@ -2,29 +2,26 @@ import styled from "@emotion/styled";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useSelector } from "react-redux";
-import { selectRoomId } from "../features/appSlice";
+import { selectRoomId, selectRoomType } from "../features/appSlice";
 import ChatInput from "./ChatInput";
 import { db } from "../firebase";
-import {
-  collection,
-  doc,
-  query,
-  orderBy,
-} from "firebase/firestore";
+import { collection, doc, query, orderBy } from "firebase/firestore";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 import { useEffect, useRef } from "react";
 
 const Chat = () => {
   const chatRef = useRef(null);
+  const roomType = useSelector(selectRoomType);
   const roomId = useSelector(selectRoomId);
-  const [roomDetails] = useDocument(roomId && doc(db, "rooms", roomId));
+  const [roomDetails] = useDocument(
+    roomId && doc(db, roomType, roomId)
+  );
   const [roomMessages, loading] = useCollection(
-    roomId &&
-      query(
-        collection(doc(db, "rooms", roomId), "messages"),
-        orderBy("timeStamp")
-      )
+    roomId && query(
+          collection(doc(db, roomType, roomId), "messages"),
+          orderBy("timeStamp")
+        )
   );
 
   useEffect(() => {
@@ -68,6 +65,7 @@ const Chat = () => {
             channelId={roomId}
             channelName={roomDetails?.data().name}
             chatRef={chatRef}
+            chatType={roomType}
           />
         </>
       )}
